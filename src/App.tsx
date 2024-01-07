@@ -1,17 +1,9 @@
 // src/App.tsx
+import { AuthProvider } from './routes/AuthContext';
+import AuthRoutes from './routes/AuthRoutes';
 
-import React from 'react';
-import './App.css';
-import ItemList from './components/ItemList';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <ItemList />
-      </header>
-    </div>
-  );
-}
+const App = () => {
+  return <AuthProvider><AuthRoutes /></AuthProvider>;
+};
 
 export default App;
