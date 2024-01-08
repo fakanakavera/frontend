@@ -1,7 +1,7 @@
-import React, { useEffect, useState, Suspense, lazy, ReactNode } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import checkIsAuthenticated from '../utils/auth';
-
+import {AuthenticatedLayoutProps} from '../types/authTypes';
 
 const RegisterForm = lazy(() => import('../components/RegisterForm'));
 const LoginForm = lazy(() => import('../components/LoginForm'));
@@ -10,37 +10,28 @@ const Items = lazy(() => import('../components/ItemList'));
 
 const AuthRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(checkIsAuthenticated());
+  
+  const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children, isAuthenticated }) => {
+    return isAuthenticated ? <>{children}</> : <Navigate to="/auth/login" />;
+  };
 
-  // useEffect(() => {
-  //     const token = localStorage.getItem('access_token');
-  //     setIsAuthenticated(!!token);
-  //   }, []);
-    
-  const handleLoginSuccess = () => {
-      console.log('Login successful');
-      setIsAuthenticated(true);
-    };
-    
-    interface AuthenticatedLayoutProps {
-      children: ReactNode;
-      isAuthenticated: boolean;
-    }
-    const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children, isAuthenticated }) => {
-      return isAuthenticated ? <>{children}</> : <Navigate to="/auth/login" />;
-    };
-    return (
-      <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/auth/login" element={<LoginForm onLoginSuccess={handleLoginSuccess} />} />
-            <Route path="/auth/register" element={<RegisterForm/>} />
-          </Routes>
-        <AuthenticatedLayout isAuthenticated={isAuthenticated}>
-          <Routes>
-            <Route path="/auth/logout" element={<Logout />} />
-            <Route path="/items" element={<Items />} />
-          </Routes>
-        </AuthenticatedLayout>
-      </Suspense>
+  const handleAuthenticationChange = (authenticated: boolean) => {
+    setIsAuthenticated(authenticated);
+  };
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/auth/login" element={<LoginForm onAuthenticationChange={handleAuthenticationChange} />} />
+          <Route path="/auth/register" element={<RegisterForm/>} />
+        </Routes>
+      <AuthenticatedLayout isAuthenticated={isAuthenticated}>
+        <Routes>
+          <Route path="/auth/logout" element={<Logout onAuthenticationChange={handleAuthenticationChange}/>} />
+          <Route path="/items" element={<Items />} />
+        </Routes>
+      </AuthenticatedLayout>
+    </Suspense>
   );
 };
 
