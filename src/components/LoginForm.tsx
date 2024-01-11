@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { UserCredentials, AuthToken, AuthenticationChangeProps } from '../types/authTypes';
+import { useRedirect } from '../hooks/useRedirect';
+import { login } from '../services/authService';
 
 const LoginForm: React.FC<AuthenticationChangeProps> = ({ onAuthenticationChange }) => {
   const [credentials, setCredentials] = useState<UserCredentials>({ email: '', password: '' });
-  
+  const { redirectToItems } = useRedirect();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -12,10 +13,8 @@ const LoginForm: React.FC<AuthenticationChangeProps> = ({ onAuthenticationChange
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post<AuthToken>('http://localhost:8000/auth/token/', credentials);
-      localStorage.setItem('access_token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
-      onAuthenticationChange(true); 
+      await login(credentials, onAuthenticationChange);
+      redirectToItems();
     } catch (error) {
       console.error(error);
       // Handle login error

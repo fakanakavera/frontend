@@ -1,19 +1,33 @@
-import React, { useState, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState, Suspense, lazy, FC } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import checkIsAuthenticated from '../utils/auth';
-import {AuthenticatedLayoutProps} from '../types/authTypes';
+import { AuthenticationChangeProps } from '../types/authTypes';
 
 const RegisterForm = lazy(() => import('../components/RegisterForm'));
 const LoginForm = lazy(() => import('../components/LoginForm'));
 const Logout = lazy(() => import('../components/Logout'));
 const Items = lazy(() => import('../components/ItemList'));
+const TopBar = lazy(() => import('../components/TopBar'));
 
-const AuthRoutes = () => {
+interface LoginFormProps {
+  onAuthenticationChange: (authenticated: boolean) => void;
+}
+
+const AuthenticatedRoutes: FC<AuthenticationChangeProps> = ({ onAuthenticationChange }) => {
+  const isAuthenticated = checkIsAuthenticated();
+  return isAuthenticated ? (
+    <Routes>
+      <Route path="/auth/logout" element={<Logout onAuthenticationChange={onAuthenticationChange}/>} />
+      <Route path="/items" element={<><TopBar /><Items /></>} />
+      {/* Add other authenticated routes here */}
+    </Routes>
+  ) : (
+    <Navigate to="/auth/login" />
+  );
+};
+
+const AuthRoutes: FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(checkIsAuthenticated());
-  
-  const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({ children, isAuthenticated }) => {
-    return isAuthenticated ? <>{children}</> : <Navigate to="/auth/login" />;
-  };
 
   const handleAuthenticationChange = (authenticated: boolean) => {
     setIsAuthenticated(authenticated);
@@ -21,16 +35,14 @@ const AuthRoutes = () => {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route path="/auth/login" element={<LoginForm onAuthenticationChange={handleAuthenticationChange} />} />
-          <Route path="/auth/register" element={<RegisterForm/>} />
-        </Routes>
-      <AuthenticatedLayout isAuthenticated={isAuthenticated}>
-        <Routes>
-          <Route path="/auth/logout" element={<Logout onAuthenticationChange={handleAuthenticationChange}/>} />
-          <Route path="/items" element={<Items />} />
-        </Routes>
-      </AuthenticatedLayout>
+      <Routes>
+        {/* Routes that do not require authentication */}
+        <Route path="/auth/login" element={<LoginForm onAuthenticationChange={handleAuthenticationChange} />} />
+        <Route path="/auth/register" element={<RegisterForm onAuthenticationChange={handleAuthenticationChange}/>} />
+
+        {/* Authenticated Routes */}
+        <Route path="/*" element={<AuthenticatedRoutes onAuthenticationChange={handleAuthenticationChange}/>} />
+      </Routes>
     </Suspense>
   );
 };
