@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationChangeProps } from '../types/authTypes';
+import { useAuth } from '../routes/AuthContext';
 
-const Logout: React.FC<AuthenticationChangeProps> = ({ onAuthenticationChange }) => {
+const Logout: React.FC = () => {
   const navigate = useNavigate();
+  const { onAuthenticationChange } = useAuth();
 
   useEffect(() => {
     // Remove tokens or any authentication-related data from localStorage

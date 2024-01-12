@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRedirect } from '../hooks/useRedirect';
 
 const TopBar = () => {
   const [email, setEmail] = useState<string | null>(null);
-
+  const { redirectToItems } = useRedirect();
+  
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -24,6 +26,7 @@ const TopBar = () => {
   return (
     <div className="top-bar">
       {email ? <p>Welcome, {email}</p> : <p>Please log in</p>}
+      <button onClick={redirectToItems}>Go to Items</button>
     </div>
   );
 };

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { UserCredentials, AuthenticationChangeProps } from '../types/authTypes';
 import { useRedirect } from '../hooks/useRedirect';
 import { login } from '../services/authService';
+import { useAuth } from '../routes/AuthContext';
 
-const RegisterForm: React.FC<AuthenticationChangeProps> = ({ onAuthenticationChange }) => {
+const RegisterForm: React.FC = () => {
   const [user, setUser] = useState<UserCredentials>({ email: '', password: '' });
   const { redirectToItems } = useRedirect();
+  const { onAuthenticationChange } = useAuth();
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
