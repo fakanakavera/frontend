@@ -31,4 +31,16 @@ const logoutUser = async (onAuthenticationChange: (authStatus: boolean) => void)
   // navigate('/auth/login');
 };
 
-export { checkIsAuthenticated, getUserEmail, logoutUser };
+function assessPasswordStrength(password: string): number {
+  let strength = 0;
+  if (password.length > 5) strength += 1;
+  if (password.length > 10) strength += 1;
+  if (/[A-Z]/.test(password)) strength += 1;
+  if (/[a-z]/.test(password)) strength += 1;
+  if (/[0-9]/.test(password)) strength += 1;
+  if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+  return strength; // The strength will be a value between 0 and 6
+}
+
+export { checkIsAuthenticated, getUserEmail, logoutUser, assessPasswordStrength };

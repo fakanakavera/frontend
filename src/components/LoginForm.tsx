@@ -17,8 +17,10 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
     try {
       await login(credentials, onAuthenticationChange);
+      alert('Login successful!');
       redirectToItems();
     } catch (error) {
+      alert('Login failed!');
       console.error(error);
       // Handle login error
     } 
