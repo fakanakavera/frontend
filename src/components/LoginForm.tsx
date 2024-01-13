@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { UserCredentials, AuthenticationChangeProps } from '../types/authTypes';
+import React, { useState } from 'react';
+import { UserCredentials } from '../types/authTypes';
 import { useRedirect } from '../hooks/useRedirect';
 import { login } from '../services/authService';
 import { useAuth } from '../routes/AuthContext';
@@ -7,7 +7,7 @@ import { useAuth } from '../routes/AuthContext';
 const LoginForm: React.FC = () => {
   const [credentials, setCredentials] = useState<UserCredentials>({ email: '', password: '' });
   const { redirectToItems } = useRedirect();
-  const { isAuthenticated, onAuthenticationChange } = useAuth();
+  const { onAuthenticationChange } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });

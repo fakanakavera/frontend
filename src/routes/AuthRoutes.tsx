@@ -8,11 +8,13 @@ const LoginForm = lazy(() => import('../components/LoginForm'));
 const Logout = lazy(() => import('../components/Logout'));
 const Items = lazy(() => import('../components/ItemList'));
 const TopBar = lazy(() => import('../components/TopBar'));
+const ChangePassword = lazy(() => import('../components/ChangePassword'));
 
 const AuthenticatedRoutes: FC = () => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? (
     <Routes>
+      <Route path="/auth/change-password" element={<><TopBar /><ChangePassword /></>} />
       <Route path="/auth/logout" element={<Logout />} />
       <Route path="/items" element={<><TopBar /><Items /></>} />
       {/* Add other authenticated routes here */}

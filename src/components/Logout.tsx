@@ -1,22 +1,17 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthenticationChangeProps } from '../types/authTypes';
 import { useAuth } from '../routes/AuthContext';
+import { logoutUser } from '../utils/auth';
 
 const Logout: React.FC = () => {
   const navigate = useNavigate();
   const { onAuthenticationChange } = useAuth();
 
   useEffect(() => {
-    // Remove tokens or any authentication-related data from localStorage
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    // Use the callback from the parent component to update the state in the parent
-    onAuthenticationChange(false); 
-    console.log('Logout successful');
-    // Redirect the user to the login page
+    logoutUser(onAuthenticationChange);
     navigate('/auth/login');
-  }, [navigate]);
+  }, [navigate, onAuthenticationChange]);
+
 
   // Optionally, you can render a message or a loader here
   return <div>Logging out...</div>;

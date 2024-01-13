@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
-import  checkIsAuthenticated   from '../utils/auth';
+import  {checkIsAuthenticated, getUserEmail}   from '../utils/auth';
 
 interface AuthContextType {
+  userEmail: string;
   isAuthenticated: boolean;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
   onAuthenticationChange: (authStatus: boolean) => void;
@@ -15,14 +16,22 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(checkIsAuthenticated());
+  const [userEmail, setUserEmail] = useState<string>('');
+
+  useEffect(() => {
+    if (isAuthenticated){
+      getUserEmail(setUserEmail);
+    }else{
+      setUserEmail('');
+    }
+  }, [isAuthenticated]);
 
   const onAuthenticationChange = (authStatus: boolean) => {
-    console.log('onAuthenticationChange');
     setIsAuthenticated(authStatus);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, onAuthenticationChange }}>
+    <AuthContext.Provider value={{ userEmail, isAuthenticated, setIsAuthenticated, onAuthenticationChange }}>
       {children}
     </AuthContext.Provider>
   );
