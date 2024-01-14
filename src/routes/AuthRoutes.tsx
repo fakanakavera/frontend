@@ -9,11 +9,13 @@ const Logout = lazy(() => import('../components/Logout'));
 const Items = lazy(() => import('../components/ItemList'));
 const TopBar = lazy(() => import('../components/TopBar'));
 const ChangePassword = lazy(() => import('../components/ChangePassword'));
+const ChangeNickname = lazy(() => import('../components/ChangeNickname'));
 
 const AuthenticatedRoutes: FC = () => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? (
     <Routes>
+      <Route path="/auth/change-nickname" element={<><TopBar /><ChangeNickname /></>} />
       <Route path="/auth/change-password" element={<><TopBar /><ChangePassword /></>} />
       <Route path="/auth/logout" element={<Logout />} />
       <Route path="/items" element={<><TopBar /><Items /></>} />

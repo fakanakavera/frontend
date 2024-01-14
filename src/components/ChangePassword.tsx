@@ -35,7 +35,7 @@ const ChangePassword: React.FC = () => {
             alert('Password changed successfully');
             
         } catch (error) {
-            alert('Error changing password');
+            alert('Error changing password' + error);
         }
     };
 

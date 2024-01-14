@@ -9,7 +9,7 @@ const getUserEmail = async (setEmail: (email: string) => void) => {
   const token = localStorage.getItem('access_token');
   if (token) {
     try {
-      const response = await axios.get('http://localhost:8000/auth/get_user_email', {
+      const response = await axios.get('http://localhost:8000/auth/get_user_email/', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
