@@ -6,19 +6,30 @@ import { login } from '../services/authService';
 import { useAuth } from '../routes/AuthContext';
 import { assessPasswordStrength } from '../utils/auth';
 import PasswordStrengthBar from './PasswordStrengthBar';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const RegisterForm: React.FC = () => {
   const [user, setUser] = useState<UserCredentials>({ email: '', password: '' });
   const { redirectToItems } = useRedirect();
   const { onAuthenticationChange } = useAuth();
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+
+  const payload = {
+    ...user,
+    recaptcha: recaptchaValue
+  };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
     if (e.target.name === 'password') {
       const strength = assessPasswordStrength(e.target.value);
       setPasswordStrength(strength);
-  }
+    }
+  };
+
+  const onReCAPTCHAChange = (value: string | null) => {
+    setRecaptchaValue(value);
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +37,7 @@ const RegisterForm: React.FC = () => {
     try {
       // Adjust the URL to your API endpoint for user registration
       await axios.post('http://localhost:8000/auth/register/', user);
-      await login(user, onAuthenticationChange);
+      await login(user, onAuthenticationChange, recaptchaValue);
       alert('Registration successful!')
       // Handle registration success, e.g., redirect to login page or auto-login
       redirectToItems();
@@ -54,6 +65,10 @@ const RegisterForm: React.FC = () => {
         placeholder="Password"
       />
       <PasswordStrengthBar strength={passwordStrength} />
+      <ReCAPTCHA
+        sitekey="6Lf4WFQpAAAAAHyhXYMZNFsSt1MAmOHm7tgFBbWk"
+        onChange={onReCAPTCHAChange}
+      />
       <button type="submit">Register</button>
     </form>
   );
