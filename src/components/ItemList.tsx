@@ -2,6 +2,8 @@
 
 import React from 'react';
 import useFetch from '../hooks/useFetch'; 
+import StatForm from './forms/StatForm';
+import StatToAbilityForm from './forms/StatToAbility';
 
 interface Item {
   items: string[];
@@ -17,6 +19,7 @@ const ItemList: React.FC = () => {
 
   return (
     <div>
+      <><StatToAbilityForm /></>
       <h2>Item List</h2>
       <ul>
         {data.items.map(item => (

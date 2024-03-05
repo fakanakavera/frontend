@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     try {
       await login(credentials, onAuthenticationChange, recaptchaValue);
 
-      alert('Login successful!');
+      //alert('Login successful!');
       redirectToItems();
     } catch (error) {
       alert('Login failed!');

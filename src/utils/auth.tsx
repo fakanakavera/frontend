@@ -1,12 +1,17 @@
 import axios from 'axios';
 
-const checkIsAuthenticated = () => {
+const getlocaltoken = () => {
     const token = localStorage.getItem('access_token');
+    return token;
+}
+
+const checkIsAuthenticated = () => {
+    const token = getlocaltoken();
     return !!token; // returns true if token exists, false otherwise
   };
 
 const getUserEmail = async (setEmail: (email: string) => void) => {
-  const token = localStorage.getItem('access_token');
+  const token = getlocaltoken();
   if (token) {
     try {
       const response = await axios.get('http://localhost:8000/auth/get_user_email/', {
@@ -43,4 +48,4 @@ function assessPasswordStrength(password: string): number {
   return strength; // The strength will be a value between 0 and 6
 }
 
-export { checkIsAuthenticated, getUserEmail, logoutUser, assessPasswordStrength };
+export { checkIsAuthenticated, getUserEmail, logoutUser, assessPasswordStrength, getlocaltoken };
