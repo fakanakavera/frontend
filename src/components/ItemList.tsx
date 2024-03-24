@@ -1,31 +1,49 @@
 // src/components/ItemList.tsx
 
-import React from 'react';
-import useFetch from '../hooks/useFetch'; 
+import React, { useEffect, useState } from 'react';
+import useFetch from '../hooks/useFetch';
 import StatForm from './forms/StatForm';
 import StatToAbilityForm from './forms/StatToAbility';
+import SpeedChart, { SpeedData } from './rechart_test';
+// src/components/ItemList.tsx
 
-interface Item {
-  items: string[];
-}
 
 const ItemList: React.FC = () => {
-  const { data, loading, error } = useFetch<Item>('http://localhost:8000/auth/items/');
+  const [telData, setTelData] = useState<SpeedData[]>([]);
+  const [lapNumber, setLapNumber] = useState<string>(''); // Use string to easily manage the form input
 
-  // Since the custom hook manages loading and error states, you can use them directly in your component
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  if (!data) return <div>No data</div>;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/telemetry/car-telemetry/lap/${lapNumber}/`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const jsonData = await response.json();
+      setTelData(jsonData);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  };
 
   return (
     <div>
-      <><StatToAbilityForm /></>
-      <h2>Item List</h2>
-      <ul>
-        {data.items.map(item => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="lapNumber">Enter Lap Number: </label>
+        <input
+          id="lapNumber"
+          type="number"
+          value={lapNumber}
+          onChange={(e) => setLapNumber(e.target.value)}
+          placeholder="Lap Number"
+        />
+        <button type="submit">Fetch Data</button>
+      </form>
+
+      <div>
+        <h2>Speed Data Chart</h2>
+        {telData.length > 0 && <SpeedChart data={telData} />}
+      </div>
     </div>
   );
 };
