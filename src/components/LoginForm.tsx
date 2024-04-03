@@ -31,7 +31,7 @@ const LoginForm: React.FC = () => {
       alert('Login failed!');
       console.error(error);
       // Handle login error
-    } 
+    }
   };
 
   return (
@@ -39,11 +39,11 @@ const LoginForm: React.FC = () => {
       <input type="text" name="email" value={credentials.email} onChange={handleChange} />
       <input type="password" name="password" value={credentials.password} onChange={handleChange} />
       <ReCAPTCHA
-        sitekey="6Lf4WFQpAAAAAHyhXYMZNFsSt1MAmOHm7tgFBbWk"
+        sitekey="6LehVa0pAAAAAE5XJX61VIll_VcbFiH7eei9llKc"
         onChange={onReCAPTCHAChange}
       />
       <button type="submit">Login</button>
-      
+
     </form>
   );
 };
