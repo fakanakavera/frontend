@@ -19,7 +19,7 @@ const RegisterForm: React.FC = () => {
     ...user,
     recaptcha: recaptchaValue
   };
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
     if (e.target.name === 'password') {
@@ -31,7 +31,7 @@ const RegisterForm: React.FC = () => {
   const onReCAPTCHAChange = (value: string | null) => {
     setRecaptchaValue(value);
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -66,7 +66,7 @@ const RegisterForm: React.FC = () => {
       />
       <PasswordStrengthBar strength={passwordStrength} />
       <ReCAPTCHA
-        sitekey="6Lf4WFQpAAAAAHyhXYMZNFsSt1MAmOHm7tgFBbWk"
+        sitekey="6Lc5V60pAAAAANr8SlDTfCFawSC9l9Q58aBREgSI"
         onChange={onReCAPTCHAChange}
       />
       <button type="submit">Register</button>
