@@ -15,7 +15,7 @@ const ItemList: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://127.0.0.1:8000/telemetry/car-telemetry/lap/${lapNumber}/`);
+      const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/lap/${lapNumber}/`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

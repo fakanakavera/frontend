@@ -27,13 +27,13 @@ const ChangePassword: React.FC = () => {
 
         try {
             const token = localStorage.getItem('access_token');
-            await axios.post('http://localhost:8000/auth/change-password/', passwords, {
+            await axios.post('http://192.168.3.14:8000/auth/change-password/', passwords, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             alert('Password changed successfully');
-            
+
         } catch (error) {
             alert('Error changing password' + error);
         }

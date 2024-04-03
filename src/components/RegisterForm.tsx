@@ -36,7 +36,7 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     try {
       // Adjust the URL to your API endpoint for user registration
-      await axios.post('http://localhost:8000/auth/register/', user);
+      await axios.post('http://192.168.3.14:8000/auth/register/', user);
       await login(user, onAuthenticationChange, recaptchaValue);
       alert('Registration successful!')
       // Handle registration success, e.g., redirect to login page or auto-login

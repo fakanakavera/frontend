@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 interface ChangeNicknameProps {
     nickname: string;
-    }
+}
 
 
 const ChangeNickname: React.FC = () => {
@@ -15,13 +15,13 @@ const ChangeNickname: React.FC = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('access_token');
-            await axios.post('http://localhost:8000/auth/change-nickname/', nickname, {
+            await axios.post('http://192.168.3.14:8000/auth/change-nickname/', nickname, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             alert('Nickname changed successfully');
-            
+
         } catch (error) {
             alert('Error changing nickname' + error);
         }

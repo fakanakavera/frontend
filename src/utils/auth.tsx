@@ -1,20 +1,20 @@
 import axios from 'axios';
 
 const getlocaltoken = () => {
-    const token = localStorage.getItem('access_token');
-    return token;
+  const token = localStorage.getItem('access_token');
+  return token;
 }
 
 const checkIsAuthenticated = () => {
-    const token = getlocaltoken();
-    return !!token; // returns true if token exists, false otherwise
-  };
+  const token = getlocaltoken();
+  return !!token; // returns true if token exists, false otherwise
+};
 
 const getUserEmail = async (setEmail: (email: string) => void) => {
   const token = getlocaltoken();
   if (token) {
     try {
-      const response = await axios.get('http://localhost:8000/auth/get_user_email/', {
+      const response = await axios.get('http://192.168.3.14:8000/auth/get_user_email/', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -31,7 +31,7 @@ const logoutUser = async (onAuthenticationChange: (authStatus: boolean) => void)
   localStorage.removeItem('access_token');
   localStorage.removeItem('refresh_token');
   // Use the callback from the parent component to update the state in the parent
-  onAuthenticationChange(false); 
+  onAuthenticationChange(false);
   // Redirect the user to the login page
   // navigate('/auth/login');
 };

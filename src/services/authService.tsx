@@ -6,9 +6,9 @@ export const login = async (credentials: UserCredentials, onAuthenticationChange
     ...credentials,
     recaptcha: recaptchaValue
   };
-  
+
   try {
-    const response = await axios.post<AuthToken>('http://localhost:8000/auth/token/', payload);
+    const response = await axios.post<AuthToken>('http://192.168.3.14:8000/auth/token/', payload);
     localStorage.setItem('access_token', response.data.access);
     localStorage.setItem('refresh_token', response.data.refresh);
     onAuthenticationChange(true);
