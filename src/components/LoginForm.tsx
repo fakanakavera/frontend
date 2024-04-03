@@ -39,7 +39,7 @@ const LoginForm: React.FC = () => {
       <input type="text" name="email" value={credentials.email} onChange={handleChange} />
       <input type="password" name="password" value={credentials.password} onChange={handleChange} />
       <ReCAPTCHA
-        sitekey="6Lc5V60pAAAAAOH1x4J8IebcDPoyb1jc4WdE__Va"
+        sitekey="6Lc5V60pAAAAANr8SlDTfCFawSC9l9Q58aBREgSI"
         onChange={onReCAPTCHAChange}
       />
       <button type="submit">Login</button>
