@@ -17,8 +17,8 @@ export interface SpeedChartProps {
 const SpeedChart: React.FC<SpeedChartProps> = ({ data }) => {
     return (
         <LineChart
-            width={600}
-            height={300}
+            width={1600}
+            height={1300}
             data={data}
             margin={{
                 top: 5,
