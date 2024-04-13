@@ -33,6 +33,7 @@ const ItemList: React.FC = () => {
     e.preventDefault();
     try {
       const selectedUID = dropdownRef.current?.getSelectedUID();
+      console.log(selectedUID);
       const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/${selectedUID}/`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
