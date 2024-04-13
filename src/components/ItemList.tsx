@@ -21,7 +21,6 @@ const ItemList: React.FC = () => {
         }
         const jsonData = await response.json();
         setSessionUIDs(jsonData);
-        console.log(jsonData);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       }
