@@ -32,7 +32,7 @@ const ItemList: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/lap/${lapNumber}/`);
+      const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/${sessionUIDs}/`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -47,14 +47,6 @@ const ItemList: React.FC = () => {
     <div>
       <DropdownMenu sessionUIDs={sessionUIDs} />
       <form onSubmit={handleSubmit}>
-        <label htmlFor="lapNumber">Enter Lap Number: </label>
-        <input
-          id="lapNumber"
-          type="number"
-          value={lapNumber}
-          onChange={(e) => setLapNumber(e.target.value)}
-          placeholder="Lap Number"
-        />
         <button type="submit">Fetch Data</button>
       </form>
 
