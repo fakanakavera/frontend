@@ -38,9 +38,9 @@ const ItemList: React.FC = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log(response)
       const jsonData = await response.json();
       setTelData(jsonData);
+      console.log(telData);
     } catch (error) {
       console.error('Failed to fetch data:', error);
     }
