@@ -1,15 +1,16 @@
 // src/components/ItemList.tsx
 
-import React, { useEffect, useState } from 'react';
-import DropdownMenu from './basic/dropdown';
+import React, { useEffect, useState, useRef } from 'react';
+import DropdownMenu, { DropdownMenuHandles } from './basic/dropdown';
 import SpeedChart, { SpeedData } from './rechart_test';
 // src/components/ItemList.tsx
 
 
 const ItemList: React.FC = () => {
   const [telData, setTelData] = useState<SpeedData[]>([]);
-  const [lapNumber, setLapNumber] = useState<string>(''); // Use string to easily manage the form input
   const [sessionUIDs, setSessionUIDs] = useState<string[]>([]);
+  const dropdownRef = useRef<DropdownMenuHandles>(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +33,8 @@ const ItemList: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/${sessionUIDs}/`);
+      const selectedUID = dropdownRef.current?.getSelectedUID();
+      const response = await fetch(`http://192.168.3.14:8000/telemetry/car-telemetry/${selectedUID}/`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -45,7 +47,7 @@ const ItemList: React.FC = () => {
 
   return (
     <div>
-      <DropdownMenu sessionUIDs={sessionUIDs} />
+      <DropdownMenu ref={dropdownRef} sessionUIDs={sessionUIDs} />
       <form onSubmit={handleSubmit}>
         <button type="submit">Fetch Data</button>
       </form>

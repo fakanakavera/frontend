@@ -1,29 +1,34 @@
-import React, { useState } from 'react';
+// DropdownMenu.tsx
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 
 interface DropdownMenuProps {
     sessionUIDs: string[];
-    onSelectionChange: (selectedUID: string) => void;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ sessionUIDs, onSelectionChange }) => {
-    // State to hold the selected value
+export interface DropdownMenuHandles {
+    getSelectedUID: () => string;
+}
+
+const DropdownMenu = forwardRef<DropdownMenuHandles, DropdownMenuProps>(({ sessionUIDs }, ref) => {
     const [selectedUID, setSelectedUID] = useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newSelectedUID = event.target.value;
-        setSelectedUID(newSelectedUID);
-        onSelectionChange(newSelectedUID);
+        setSelectedUID(event.target.value);
     };
+
+    useImperativeHandle(ref, () => ({
+        getSelectedUID: () => selectedUID,
+    }));
 
     return (
         <select value={selectedUID} onChange={handleChange}>
-            {sessionUIDs.map(uid => (
+            {sessionUIDs.map((uid) => (
                 <option key={uid} value={uid}>
                     {uid}
                 </option>
             ))}
         </select>
     );
-};
+});
 
 export default DropdownMenu;
